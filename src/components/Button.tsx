@@ -1,7 +1,7 @@
-import { ReactNode } from "react";
+import { textButton } from "src/styles/typography";
 
 type ButtonProps = {
-  children: ReactNode;
+  text: string;
   onClick?: () => void;
   disabled?: boolean;
 };
@@ -23,7 +23,7 @@ export default function Button(props: ButtonProps) {
       onClick={handleClick}
       disabled={props.disabled}
     >
-      {props.children}
+      <span className={`${textButton}`}>{props.text}</span>
     </button>
   );
 }
