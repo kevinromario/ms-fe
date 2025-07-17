@@ -1,7 +1,8 @@
-import { ReactNode } from "react";
+import { textButton } from "src/styles/typography";
 
 type ButtonProps = {
-  children: ReactNode;
+  id?: string;
+  text: string;
   onClick?: () => void;
   disabled?: boolean;
 };
@@ -17,13 +18,14 @@ export default function Button(props: ButtonProps) {
 
   return (
     <button
+      id={props.id}
       className={`px-4 py-2 rounded ${
         props.disabled ? disabledCss : primaryCss
       }`}
       onClick={handleClick}
       disabled={props.disabled}
     >
-      {props.children}
+      <span className={`${textButton}`}>{props.text}</span>
     </button>
   );
 }
