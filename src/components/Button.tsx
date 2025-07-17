@@ -5,11 +5,12 @@ type ButtonProps = {
   text: string;
   onClick?: () => void;
   disabled?: boolean;
+  className?: string;
 };
 
 export default function Button(props: ButtonProps) {
-  const primaryCss = "bg-blue-600 text-white cursor-pointer hover:bg-blue-700";
-  const disabledCss = "bg-gray-200 text-gray-400 cursor-not-allowed";
+  const primaryCss = `bg-blue-600 text-white cursor-pointer hover:bg-blue-700 ${props.className}`;
+  const disabledCss = `bg-gray-200 text-gray-400 cursor-not-allowed ${props.className}`;
 
   const handleClick = () => {
     if (props.disabled || !props.onClick) return;
