@@ -1,6 +1,7 @@
 import { textButton } from "src/styles/typography";
 
 type ButtonProps = {
+  id?: string;
   text: string;
   onClick?: () => void;
   disabled?: boolean;
@@ -17,6 +18,7 @@ export default function Button(props: ButtonProps) {
 
   return (
     <button
+      id={props.id}
       className={`px-4 py-2 rounded ${
         props.disabled ? disabledCss : primaryCss
       }`}

@@ -4,6 +4,7 @@ import { SlClose } from "react-icons/sl";
 import { textUnderlineBase } from "src/styles/typography";
 
 type CardProps = {
+  id?: string;
   deletable?: boolean;
   handleDelete?: () => void;
   title: string;
@@ -22,7 +23,10 @@ export default function Card(props: CardProps) {
   }, [isOpen]);
 
   return (
-    <div className="bg-white p-6 drop-shadow-md rounded-xl flex flex-col gap-4">
+    <div
+      id={props.id}
+      className="bg-white p-6 drop-shadow-md rounded-xl flex flex-col gap-4"
+    >
       <div className="flex justify-between items-center">
         <span className={textUnderlineBase}>{props.title}</span>
         <div className="flex gap-2 ">
@@ -32,12 +36,14 @@ export default function Card(props: CardProps) {
           >
             {isOpen ? <MdCloseFullscreen /> : <MdOpenInFull />}
           </div>
-          {props.deletable && <SlClose className="cursor-pointer" />}
+          {props.deletable && (
+            <SlClose className="cursor-pointer" onClick={props.handleDelete} />
+          )}
         </div>
       </div>
       <div
         ref={contentRef}
-        className="overflow-hidden transition-all duration-300 ease-in-out"
+        className="overflow-hidden transition-all duration-200 ease-in-out"
         style={{ maxHeight }}
       >
         {props.children}
