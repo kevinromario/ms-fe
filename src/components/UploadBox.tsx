@@ -7,6 +7,7 @@ import {
   UseFormWatch,
 } from "react-hook-form";
 import { MdOutlineAttachment } from "react-icons/md";
+import { subText, textBase, textBaseMedium } from "src/styles/typography";
 
 type UploadBoxProps<T extends FieldValues, K extends FieldPath<T>> = {
   name: K;
@@ -49,14 +50,14 @@ export default function UploadBox<
       <div className="text-2xl mb-2">
         <MdOutlineAttachment />
       </div>
-      <p className="font-medium">
+      <p className={textBaseMedium}>
         Drag and drop files, or{" "}
         <span className="text-blue-600 underline">Browse</span>
       </p>
-      <p className="text-sm text-gray-500 mt-2">
+      <p className={`${subText} text-gray-500 mt-2`}>
         Support formats : png, jpg, jpeg.
       </p>
-      <p className="text-sm text-gray-400 mt-1">Max size : 5Mb</p>
+      <p className={`${subText} text-gray-400 mt-1`}>Max size : 5Mb</p>
 
       <input
         type="file"
@@ -68,7 +69,7 @@ export default function UploadBox<
         }}
         className="hidden"
       />
-      <p className="text-sm text-gray-600">{fileName}</p>
+      <p className={`${textBase} text-sm text-gray-600`}>{fileName}</p>
     </div>
   );
 }

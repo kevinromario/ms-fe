@@ -8,7 +8,7 @@ import UploadBox from "src/components/UploadBox";
 import VStack from "src/components/VStack";
 import { portfolioSchema } from "src/schemas/portfolioSchema";
 import { inputBase, textareaBase } from "src/styles/inputStyles";
-import { textParagraph } from "src/styles/typography";
+import { textBase } from "src/styles/typography";
 import { PortfolioType } from "src/types/portfolioType";
 import { getFormData, saveFormData } from "src/utils/dbUtils";
 import { compressImage } from "src/utils/imageUtils";
@@ -157,7 +157,7 @@ export default function Editor() {
           <Card title="Profile">
             <div className="flex flex-col gap-4">
               <VStack>
-                <span className={textParagraph}>Nama:</span>
+                <span className={textBase}>Nama:</span>
                 <input
                   placeholder="Name"
                   {...register("profile.name")}
@@ -166,7 +166,7 @@ export default function Editor() {
                 {errors.profile?.name && <p>{errors.profile.name.message}</p>}
               </VStack>
               <VStack>
-                <span className={textParagraph}>Title / Posisi:</span>
+                <span className={textBase}>Title / Posisi:</span>
                 <input
                   placeholder="Title / Posisi"
                   {...register("profile.title")}
@@ -175,7 +175,7 @@ export default function Editor() {
                 {errors.profile?.title && <p>{errors.profile.title.message}</p>}
               </VStack>
               <VStack>
-                <span className={textParagraph}>Deskripsi:</span>
+                <span className={textBase}>Deskripsi:</span>
                 <textarea
                   rows={4}
                   className={textareaBase}
@@ -199,7 +199,7 @@ export default function Editor() {
             >
               <div className="flex flex-col gap-4">
                 <VStack>
-                  <span className={textParagraph}>Posisi:</span>
+                  <span className={textBase}>Posisi:</span>
                   <input
                     className={inputBase}
                     placeholder="Position"
@@ -210,7 +210,7 @@ export default function Editor() {
                   )}
                 </VStack>
                 <VStack>
-                  <span className={textParagraph}>Perusahaan:</span>
+                  <span className={textBase}>Perusahaan:</span>
                   <input
                     className={inputBase}
                     placeholder="Company"
@@ -221,7 +221,7 @@ export default function Editor() {
                   )}
                 </VStack>
                 <VStack>
-                  <span className={textParagraph}>Tanggal Mulai:</span>
+                  <span className={textBase}>Tanggal Mulai:</span>
                   <input
                     className={inputBase}
                     placeholder="Tanggal Mulai"
@@ -233,7 +233,7 @@ export default function Editor() {
                   )}
                 </VStack>
                 <VStack>
-                  <span className={textParagraph}>Tanggal Selesai:</span>
+                  <span className={textBase}>Tanggal Selesai:</span>
                   <input
                     className={inputBase}
                     placeholder="Tanggal Selesai"
@@ -243,7 +243,7 @@ export default function Editor() {
                   {errors.portfolios?.[index]?.endDate && (
                     <p>{errors.portfolios?.[index]?.endDate.message}</p>
                   )}
-                  <span className={textParagraph}>Deskripsi:</span>
+                  <span className={textBase}>Deskripsi:</span>
                   <textarea
                     rows={4}
                     className={textareaBase}
