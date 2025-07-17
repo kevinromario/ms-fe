@@ -7,6 +7,8 @@ import Section from "src/components/Section";
 import UploadBox from "src/components/UploadBox";
 import VStack from "src/components/VStack";
 import { portfolioSchema } from "src/schemas/portfolioSchema";
+import { inputBase, textareaBase } from "src/styles/inputStyles";
+import { textParagraph } from "src/styles/typography";
 import { PortfolioType } from "src/types/portfolioType";
 import { getFormData, saveFormData } from "src/utils/dbUtils";
 import { compressImage } from "src/utils/imageUtils";
@@ -155,16 +157,28 @@ export default function Editor() {
           <Card title="Profile">
             <div className="flex flex-col gap-4">
               <VStack>
-                <input placeholder="Name" {...register("profile.name")} />
+                <span className={textParagraph}>Nama:</span>
+                <input
+                  placeholder="Name"
+                  {...register("profile.name")}
+                  className={inputBase}
+                />
                 {errors.profile?.name && <p>{errors.profile.name.message}</p>}
               </VStack>
               <VStack>
-                <input placeholder="Title" {...register("profile.title")} />
+                <span className={textParagraph}>Title / Posisi:</span>
+                <input
+                  placeholder="Title / Posisi"
+                  {...register("profile.title")}
+                  className={inputBase}
+                />
                 {errors.profile?.title && <p>{errors.profile.title.message}</p>}
               </VStack>
               <VStack>
+                <span className={textParagraph}>Deskripsi:</span>
                 <textarea
-                  className="resize-none"
+                  rows={4}
+                  className={textareaBase}
                   placeholder="Description"
                   {...register("profile.description")}
                 />
@@ -185,7 +199,9 @@ export default function Editor() {
             >
               <div className="flex flex-col gap-4">
                 <VStack>
+                  <span className={textParagraph}>Posisi:</span>
                   <input
+                    className={inputBase}
                     placeholder="Position"
                     {...register(`portfolios.${index}.position`)}
                   />
@@ -194,7 +210,9 @@ export default function Editor() {
                   )}
                 </VStack>
                 <VStack>
+                  <span className={textParagraph}>Perusahaan:</span>
                   <input
+                    className={inputBase}
                     placeholder="Company"
                     {...register(`portfolios.${index}.company`)}
                   />
@@ -203,7 +221,10 @@ export default function Editor() {
                   )}
                 </VStack>
                 <VStack>
+                  <span className={textParagraph}>Tanggal Mulai:</span>
                   <input
+                    className={inputBase}
+                    placeholder="Tanggal Mulai"
                     type="date"
                     {...register(`portfolios.${index}.startDate`)}
                   />
@@ -212,15 +233,20 @@ export default function Editor() {
                   )}
                 </VStack>
                 <VStack>
+                  <span className={textParagraph}>Tanggal Selesai:</span>
                   <input
+                    className={inputBase}
+                    placeholder="Tanggal Selesai"
                     type="date"
                     {...register(`portfolios.${index}.endDate`)}
                   />
                   {errors.portfolios?.[index]?.endDate && (
                     <p>{errors.portfolios?.[index]?.endDate.message}</p>
                   )}
+                  <span className={textParagraph}>Deskripsi:</span>
                   <textarea
-                    className="resize-none"
+                    rows={4}
+                    className={textareaBase}
                     placeholder="Description"
                     {...register(`portfolios.${index}.description`)}
                   />
