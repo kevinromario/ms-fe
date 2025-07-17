@@ -1,16 +1,18 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useEffect, useState } from "react";
+import Link from "next/link";
+import { useCallback, useEffect, useState } from "react";
 import { Resolver, useFieldArray, useForm } from "react-hook-form";
 import Button from "src/components/Button";
 import Card from "src/components/Card";
 import Section from "src/components/Section";
 import UploadBox from "src/components/UploadBox";
 import VStack from "src/components/VStack";
+import { usePortfolioContext } from "src/contexts/PortfolioContext";
 import { portfolioSchema } from "src/schemas/portfolioSchema";
 import { inputBase, textareaBase } from "src/styles/inputStyles";
 import { subTextError, textBase } from "src/styles/typography";
 import { PortfolioType } from "src/types/portfolioType";
-import { getFormData, saveFormData } from "src/utils/dbUtils";
+import { getDbData, saveFormData } from "src/utils/dbUtils";
 import { compressImage } from "src/utils/imageUtils";
 
 const defaultEmpty: PortfolioType = {
@@ -33,6 +35,7 @@ const defaultEmpty: PortfolioType = {
 };
 
 export default function Editor() {
+  const { setData, triggerUpdate } = usePortfolioContext();
   const [dataDefault, setDataDefault] = useState<PortfolioType | null>(null);
 
   const {
@@ -55,7 +58,7 @@ export default function Editor() {
 
   useEffect(() => {
     const loadData = async () => {
-      const data = await getFormData();
+      const data = await getDbData();
       setDataDefault(data || defaultEmpty);
       if (data) {
         reset(data);
@@ -64,9 +67,64 @@ export default function Editor() {
     loadData();
   }, [reset]);
 
+  const handlePrePayload = useCallback(
+    async (data: PortfolioType) => {
+      let isBgBlob = false;
+      let isProfileBlob = false;
+
+      if (data.backgroundImage instanceof Blob) isBgBlob = true;
+      if (data.profileImage instanceof Blob) isProfileBlob = true;
+
+      const backgroundFileList = data.backgroundImage;
+      const backgroundFile =
+        backgroundFileList instanceof FileList
+          ? backgroundFileList[0] ?? null
+          : null;
+
+      const profileFileList = data.profileImage;
+      const profileFile =
+        profileFileList instanceof FileList ? profileFileList[0] ?? null : null;
+
+      const compressedBgFile = backgroundFile
+        ? await compressImage(backgroundFile)
+        : undefined;
+
+      const compressedProfileFile = profileFile
+        ? await compressImage(profileFile)
+        : undefined;
+
+      const payload = {
+        ...data,
+        backgroundImage: isBgBlob
+          ? data.backgroundImage
+          : backgroundFile
+          ? compressedBgFile
+          : dataDefault?.backgroundImage,
+        profileImage: isProfileBlob
+          ? data.profileImage
+          : profileFile
+          ? compressedProfileFile
+          : dataDefault?.profileImage,
+      };
+      return payload;
+    },
+    [dataDefault]
+  );
+
+  useEffect(() => {
+    const subscription = watch(async (value) => {
+      const payload = await handlePrePayload(value as PortfolioType);
+      setData(payload);
+    });
+    return () => subscription.unsubscribe();
+  }, [watch, setData, handlePrePayload]);
+
   const renderEditorAction = () => {
     return (
       <div className="flex justify-between gap-2">
+        <Link href={"/"}>
+          <Button text="Lihat Portofolio" />
+        </Link>
         <Button text="Simpan Perubahan" onClick={handleSubmit(onSubmit)} />
       </div>
     );
@@ -94,31 +152,11 @@ export default function Editor() {
 
   const onSubmit = async (data: PortfolioType) => {
     try {
-      const backgroundFileList = data.backgroundImage;
-      const backgroundFile =
-        backgroundFileList instanceof FileList
-          ? backgroundFileList[0] ?? null
-          : null;
-
-      const profileFileList = data.profileImage;
-      const profileFile =
-        profileFileList instanceof FileList ? profileFileList[0] ?? null : null;
-
-      const compressedBgFile = backgroundFile
-        ? await compressImage(backgroundFile)
-        : undefined;
-
-      const compressedProfileFile = profileFile
-        ? await compressImage(profileFile)
-        : undefined;
-
-      const payload = {
-        ...data,
-        backgroundImage: compressedBgFile,
-        profileImage: compressedProfileFile,
-      };
+      const payload = await handlePrePayload(data);
 
       await saveFormData(payload);
+
+      triggerUpdate();
     } catch (error) {
       const message =
         error instanceof Error ? error.message : "Terjadi kesalahan.";

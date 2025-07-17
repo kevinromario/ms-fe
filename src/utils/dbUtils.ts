@@ -19,7 +19,7 @@ export const saveFormData = async (data: PortfolioType) => {
   await db.put(STORE_NAME, data, "portfolio");
 };
 
-export const getFormData = async () => {
+export const getDbData = async () => {
   const db = await getDB();
   return await db.get(STORE_NAME, "portfolio");
 };
