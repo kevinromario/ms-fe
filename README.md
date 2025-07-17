@@ -1,4 +1,4 @@
-# Task Manager Frontend
+# Portfolio Builder Frontend
 
 This is the frontend of a simple portfolio builder application built with **Next.js**, using IndexedDB for storage data.
 
@@ -98,55 +98,65 @@ export type PortfolioType = {
 ### 📘 Validation Schema (Yup)
 
 ```ts
-import * as yup from "yup";
-
 export const portfolioSchema = yup.object({
   backgroundImage: yup
     .mixed<FileList | File>()
     .nullable()
-    .test("fileSize", "File size too large", (value) => {
+    .test("fileSize", FILE_SIZE_MESSAGE, (value) => {
       const file = (value as FileList)?.[0];
       return !file || file.size <= MAX_FILE_SIZE_MB;
     }),
-
   profileImage: yup
     .mixed<FileList | File>()
     .nullable()
-    .test("fileSize", "File size too large", (value) => {
+    .test("fileSize", FILE_SIZE_MESSAGE, (value) => {
       const file = (value as FileList)?.[0];
       return !file || file.size <= MAX_FILE_SIZE_MB;
     }),
-
   profile: yup.object({
-    name: yup.string().max(50).required("Name is required"),
-    title: yup.string().max(30).required("Title is required"),
-    description: yup.string().max(200).required("Description is required"),
+    name: yup.string().max(50, "Max 50 karakter").required("Nama wajib diisi"),
+    title: yup
+      .string()
+      .max(30, "Max 30 karakter")
+      .required("Title wajib diisi"),
+    description: yup
+      .string()
+      .max(200, "Max 200 karakter")
+      .required("Deskripsi wajib diisi"),
   }),
-
   portfolios: yup
     .array()
     .of(
       yup.object({
-        position: yup.string().max(30).required("Position is required"),
-        company: yup.string().max(50).required("Company is required"),
-        startDate: yup.string().required("Start Date is required"),
+        position: yup
+          .string()
+          .max(30, "Max 30 karakter")
+          .required("Posisi wajib diisi"),
+        company: yup
+          .string()
+          .max(50, "Max 50 karakter")
+          .required("Perusahaan wajib diisi"),
+        startDate: yup.string().required("Tanggal Mulai wajib diisi"),
         endDate: yup
           .string()
-          .required("End Date is required")
+          .required("Tanggal Selesai wajib diisi")
           .test(
             "isAfterStartDate",
-            "End Date must be after Start Date",
+            "Tanggal Selesai harus lebih besar dari Tanggal Mulai",
             function (endDate) {
               const { startDate } = this.parent;
               if (!startDate || !endDate) return true;
               return new Date(endDate) > new Date(startDate);
             }
           ),
-        description: yup.string().max(500).required("Description is required"),
+        description: yup
+          .string()
+          .max(500, "Max 500 karakter")
+          .required("Deskripsi wajib diisi"),
       })
     )
-    .min(1, "At least one portfolio item is required")
-    .required("Portfolio section is required"),
+    .min(1, "Minimal 1 portofolio")
+    .required("Portofolio wajib diisi"),
 });
 ```
 
