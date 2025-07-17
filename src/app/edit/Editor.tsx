@@ -4,6 +4,7 @@ import { Resolver, useFieldArray, useForm } from "react-hook-form";
 import Button from "src/components/Button";
 import Card from "src/components/Card";
 import Section from "src/components/Section";
+import UploadBox from "src/components/UploadBox";
 import VStack from "src/components/VStack";
 import { portfolioSchema } from "src/schemas/portfolioSchema";
 import { PortfolioType } from "src/types/portfolioType";
@@ -37,6 +38,8 @@ export default function Editor() {
     handleSubmit,
     control,
     reset,
+    setValue,
+    watch,
     formState: { errors },
   } = useForm<PortfolioType>({
     resolver: yupResolver(portfolioSchema) as Resolver<PortfolioType>,
@@ -126,12 +129,28 @@ export default function Editor() {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col gap-5">
           <Card title="Background Image">
-            <input type="file" {...register("backgroundImage")} />
-            {errors.backgroundImage && <p>{errors.backgroundImage.message}</p>}
+            <div className="flex flex-col gap-4">
+              <UploadBox
+                name="backgroundImage"
+                register={register("backgroundImage")}
+                setValue={setValue}
+                watch={watch}
+              />
+              {errors.backgroundImage && (
+                <p>{errors.backgroundImage.message}</p>
+              )}
+            </div>
           </Card>
           <Card title="Profile Image">
-            <input type="file" {...register("profileImage")} />
-            {errors.profileImage && <p>{errors.profileImage.message}</p>}
+            <div className="flex flex-col gap-4">
+              <UploadBox
+                name="profileImage"
+                register={register("profileImage")}
+                setValue={setValue}
+                watch={watch}
+              />
+              {errors.profileImage && <p>{errors.profileImage.message}</p>}
+            </div>
           </Card>
           <Card title="Profile">
             <div className="flex flex-col gap-4">
@@ -145,6 +164,7 @@ export default function Editor() {
               </VStack>
               <VStack>
                 <textarea
+                  className="resize-none"
                   placeholder="Description"
                   {...register("profile.description")}
                 />
@@ -200,6 +220,7 @@ export default function Editor() {
                     <p>{errors.portfolios?.[index]?.endDate.message}</p>
                   )}
                   <textarea
+                    className="resize-none"
                     placeholder="Description"
                     {...register(`portfolios.${index}.description`)}
                   />

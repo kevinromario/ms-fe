@@ -2,14 +2,20 @@ import { FILE_SIZE_MESSAGE, MAX_FILE_SIZE_MB } from "src/constants";
 import * as yup from "yup";
 
 export const portfolioSchema = yup.object({
-  backgroundImage: yup.mixed().test("fileSize", FILE_SIZE_MESSAGE, (value) => {
-    const file = (value as FileList)?.[0];
-    return !file || file.size <= MAX_FILE_SIZE_MB;
-  }),
-  profileImage: yup.mixed().test("fileSize", FILE_SIZE_MESSAGE, (value) => {
-    const file = (value as FileList)?.[0];
-    return !file || file.size <= MAX_FILE_SIZE_MB;
-  }),
+  backgroundImage: yup
+    .mixed<FileList | File>()
+    .nullable()
+    .test("fileSize", FILE_SIZE_MESSAGE, (value) => {
+      const file = (value as FileList)?.[0];
+      return !file || file.size <= MAX_FILE_SIZE_MB;
+    }),
+  profileImage: yup
+    .mixed<FileList | File>()
+    .nullable()
+    .test("fileSize", FILE_SIZE_MESSAGE, (value) => {
+      const file = (value as FileList)?.[0];
+      return !file || file.size <= MAX_FILE_SIZE_MB;
+    }),
   profile: yup.object({
     name: yup.string().max(50, "Max 50 karakter").required("Nama wajib diisi"),
     title: yup
