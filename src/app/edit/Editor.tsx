@@ -5,6 +5,7 @@ import { Resolver, useFieldArray, useForm } from "react-hook-form";
 import Button from "src/components/Button";
 import Card from "src/components/Card";
 import Section from "src/components/Section";
+import Toast from "src/components/Toast";
 import UploadBox from "src/components/UploadBox";
 import VStack from "src/components/VStack";
 import { usePortfolioContext } from "src/contexts/PortfolioContext";
@@ -37,6 +38,7 @@ const defaultEmpty: PortfolioType = {
 export default function Editor() {
   const { setData, triggerUpdate } = usePortfolioContext();
   const [dataDefault, setDataDefault] = useState<PortfolioType | null>(null);
+  const [showToast, setShowToast] = useState(false);
 
   const {
     register,
@@ -45,10 +47,11 @@ export default function Editor() {
     reset,
     setValue,
     watch,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<PortfolioType>({
     resolver: yupResolver(portfolioSchema) as Resolver<PortfolioType>,
     defaultValues: dataDefault || defaultEmpty,
+    mode: "all",
   });
 
   const { fields, append, remove } = useFieldArray({
@@ -122,10 +125,11 @@ export default function Editor() {
   const renderEditorAction = () => {
     return (
       <div className="flex justify-between gap-2">
-        <Link href={"/"}>
-          <Button text="Lihat Portofolio" />
-        </Link>
-        <Button text="Simpan Perubahan" onClick={handleSubmit(onSubmit)} />
+        <Button
+          disabled={!isValid}
+          text="Simpan Perubahan"
+          onClick={handleSubmit(onSubmit)}
+        />
       </div>
     );
   };
@@ -157,6 +161,9 @@ export default function Editor() {
       await saveFormData(payload);
 
       triggerUpdate();
+
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 2000);
     } catch (error) {
       const message =
         error instanceof Error ? error.message : "Terjadi kesalahan.";
@@ -323,6 +330,7 @@ export default function Editor() {
           onClick={handleAddPortfolio}
         />
       </div>
+      <Toast message="Perubahan berhasil disimpan!" show={showToast} />
     </Section>
   );
 }

@@ -27,8 +27,21 @@ export default function Card(props: CardProps) {
 
     window.addEventListener("resize", updateMaxHeight);
 
+    const observer = new MutationObserver(() => {
+      updateMaxHeight();
+    });
+
+    if (contentRef.current) {
+      observer.observe(contentRef.current, {
+        childList: true,
+        subtree: true,
+        characterData: true,
+      });
+    }
+
     return () => {
       window.removeEventListener("resize", updateMaxHeight);
+      observer.disconnect();
     };
   }, [isOpen]);
 
