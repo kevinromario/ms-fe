@@ -40,7 +40,18 @@ export const portfolioSchema = yup.object({
           .max(50, "Max 50 karakter")
           .required("Perusahaan wajib diisi"),
         startDate: yup.string().required("Tanggal Mulai wajib diisi"),
-        endDate: yup.string().required("Tanggal Selesai wajib diisi"),
+        endDate: yup
+          .string()
+          .required("Tanggal Selesai wajib diisi")
+          .test(
+            "isAfterStartDate",
+            "Tanggal Selesai harus lebih besar dari Tanggal Mulai",
+            function (endDate) {
+              const { startDate } = this.parent;
+              if (!startDate || !endDate) return true;
+              return new Date(endDate) > new Date(startDate);
+            }
+          ),
         description: yup
           .string()
           .max(500, "Max 500 karakter")
