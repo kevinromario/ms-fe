@@ -8,7 +8,7 @@ import UploadBox from "src/components/UploadBox";
 import VStack from "src/components/VStack";
 import { portfolioSchema } from "src/schemas/portfolioSchema";
 import { inputBase, textareaBase } from "src/styles/inputStyles";
-import { textBase } from "src/styles/typography";
+import { subTextError, textBase } from "src/styles/typography";
 import { PortfolioType } from "src/types/portfolioType";
 import { getFormData, saveFormData } from "src/utils/dbUtils";
 import { compressImage } from "src/utils/imageUtils";
@@ -139,7 +139,7 @@ export default function Editor() {
                 watch={watch}
               />
               {errors.backgroundImage && (
-                <p>{errors.backgroundImage.message}</p>
+                <p className={subTextError}>{errors.backgroundImage.message}</p>
               )}
             </div>
           </Card>
@@ -151,7 +151,9 @@ export default function Editor() {
                 setValue={setValue}
                 watch={watch}
               />
-              {errors.profileImage && <p>{errors.profileImage.message}</p>}
+              {errors.profileImage && (
+                <p className={subTextError}>{errors.profileImage.message}</p>
+              )}
             </div>
           </Card>
           <Card title="Profile">
@@ -163,7 +165,9 @@ export default function Editor() {
                   {...register("profile.name")}
                   className={inputBase}
                 />
-                {errors.profile?.name && <p>{errors.profile.name.message}</p>}
+                {errors.profile?.name && (
+                  <p className={subTextError}>{errors.profile.name.message}</p>
+                )}
               </VStack>
               <VStack>
                 <span className={textBase}>Title / Posisi:</span>
@@ -172,7 +176,9 @@ export default function Editor() {
                   {...register("profile.title")}
                   className={inputBase}
                 />
-                {errors.profile?.title && <p>{errors.profile.title.message}</p>}
+                {errors.profile?.title && (
+                  <p className={subTextError}>{errors.profile.title.message}</p>
+                )}
               </VStack>
               <VStack>
                 <span className={textBase}>Deskripsi:</span>
@@ -183,7 +189,9 @@ export default function Editor() {
                   {...register("profile.description")}
                 />
                 {errors.profile?.description && (
-                  <p>{errors.profile.description.message}</p>
+                  <p className={subTextError}>
+                    {errors.profile.description.message}
+                  </p>
                 )}
               </VStack>
             </div>
@@ -206,7 +214,9 @@ export default function Editor() {
                     {...register(`portfolios.${index}.position`)}
                   />
                   {errors.portfolios?.[index]?.position && (
-                    <p>{errors.portfolios?.[index]?.position.message}</p>
+                    <p className={subTextError}>
+                      {errors.portfolios?.[index]?.position.message}
+                    </p>
                   )}
                 </VStack>
                 <VStack>
@@ -217,7 +227,9 @@ export default function Editor() {
                     {...register(`portfolios.${index}.company`)}
                   />
                   {errors.portfolios?.[index]?.company && (
-                    <p>{errors.portfolios?.[index]?.company.message}</p>
+                    <p className={subTextError}>
+                      {errors.portfolios?.[index]?.company.message}
+                    </p>
                   )}
                 </VStack>
                 <VStack>
@@ -229,7 +241,9 @@ export default function Editor() {
                     {...register(`portfolios.${index}.startDate`)}
                   />
                   {errors.portfolios?.[index]?.startDate && (
-                    <p>{errors.portfolios?.[index]?.startDate.message}</p>
+                    <p className={subTextError}>
+                      {errors.portfolios?.[index]?.startDate.message}
+                    </p>
                   )}
                 </VStack>
                 <VStack>
@@ -241,7 +255,9 @@ export default function Editor() {
                     {...register(`portfolios.${index}.endDate`)}
                   />
                   {errors.portfolios?.[index]?.endDate && (
-                    <p>{errors.portfolios?.[index]?.endDate.message}</p>
+                    <p className={subTextError}>
+                      {errors.portfolios?.[index]?.endDate.message}
+                    </p>
                   )}
                   <span className={textBase}>Deskripsi:</span>
                   <textarea
@@ -251,7 +267,9 @@ export default function Editor() {
                     {...register(`portfolios.${index}.description`)}
                   />
                   {errors.portfolios?.[index]?.description && (
-                    <p>{errors.portfolios?.[index]?.description.message}</p>
+                    <p className={subTextError}>
+                      {errors.portfolios?.[index]?.description.message}
+                    </p>
                   )}
                 </VStack>
               </div>
