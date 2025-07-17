@@ -17,9 +17,19 @@ export default function Card(props: CardProps) {
   const [maxHeight, setMaxHeight] = useState("0px");
 
   useEffect(() => {
-    if (contentRef.current) {
-      setMaxHeight(isOpen ? `${contentRef.current.scrollHeight}px` : "0px");
-    }
+    const updateMaxHeight = () => {
+      if (contentRef.current) {
+        setMaxHeight(isOpen ? `${contentRef.current.scrollHeight}px` : "0px");
+      }
+    };
+
+    updateMaxHeight();
+
+    window.addEventListener("resize", updateMaxHeight);
+
+    return () => {
+      window.removeEventListener("resize", updateMaxHeight);
+    };
   }, [isOpen]);
 
   return (
