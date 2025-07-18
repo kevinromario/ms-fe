@@ -14,7 +14,7 @@ export default function EditPage() {
     <div className={`flex flex-col min-h-screen md:flex-row`}>
       <Editor />
       <div className="hidden md:block md:w-px md:my-5 md:bg-gray-300" />
-      <Section title="Preview">
+      <Section id="preview" title="Preview">
         <Portfolio {...data} />
       </Section>
       <Link href={"/"}>

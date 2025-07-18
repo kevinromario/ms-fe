@@ -172,7 +172,7 @@ export default function Editor() {
   };
 
   return (
-    <Section title="Editor" action={renderEditorAction()}>
+    <Section id="editor" title="Editor" action={renderEditorAction()}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col gap-5">
           <Card title="Background Image">
