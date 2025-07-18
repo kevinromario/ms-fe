@@ -32,13 +32,14 @@ export default function HomePage() {
         <div className="w-full sm:w-sm 3xl:w-md bg-white p-7 flex flex-col items-center justify-center gap-4 rounded-xl drop-shadow-xl">
           <p className={textBase}>Kamu belum punya portofolio</p>
           <Link href={"/edit"}>
-            <Button text="Buat Portofolio" />
+            <Button id="create-portfolio" text="Buat Portofolio" />
           </Link>
         </div>
       )}
       {data && (
         <Link href="/edit">
           <Button
+            id="edit-portfolio"
             text="Edit Portofolio"
             className="fixed bottom-6 right-6 z-50"
           />

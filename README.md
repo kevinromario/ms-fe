@@ -88,8 +88,8 @@ export type PortfolioType = {
   portfolios: {
     position: string;
     company: string;
-    startDate: string; // Format: YYYY-MM-DD
-    endDate: string; // Format: YYYY-MM-DD
+    startDate: string;
+    endDate: string;
     description: string;
   }[];
 };
@@ -176,3 +176,11 @@ export const portfolioSchema = yup.object({
   - `company`: string, max 50 characters
   - `startDate` and `endDate`: string in `YYYY-MM-DD` format. `endDate` must be after `startDate`
   - `description`: string, max 500 characters
+
+## 🧪 Testing
+
+### ✅ Run Tests
+
+```
+npm run test
+```

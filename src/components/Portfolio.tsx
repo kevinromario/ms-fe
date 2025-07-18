@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import Image from "next/image";
 import PortfolioCard from "../components/PortfolioCard";
 
-type PortfolioProps = {
+export type PortfolioProps = {
   backgroundImage?: FileList | File | Blob | null;
   profileImage?: FileList | File | Blob | null;
   profile?: {
@@ -40,9 +40,15 @@ export default function Portfolio(props: PortfolioProps) {
       {/* Header Avatar dan Background */}
       <div className="relative">
         {bgImageError || !imageSrc.bgImage ? (
-          <div className="w-full h-40 lg:h-60 bg-black" />
+          <div
+            data-testid="portfolio-default-bg-pict"
+            className="w-full h-40 lg:h-60 bg-black"
+          />
         ) : (
-          <div className="relative h-40 lg:h-60">
+          <div
+            data-testid="portfolio-bg-pict"
+            className="relative h-40 lg:h-60"
+          >
             <Image
               src={imageSrc.bgImage}
               alt={"Background"}
@@ -54,7 +60,10 @@ export default function Portfolio(props: PortfolioProps) {
         )}
         <div className="absolute top-20 lg:top-30 left-1/2 transform -translate-x-1/2">
           {profileImageError || !imageSrc.profileImage ? (
-            <div className="relative w-30 lg:w-40 h-30 lg:h-40 ">
+            <div
+              data-testid="portfolio-default-profil-pict"
+              className="relative w-30 lg:w-40 h-30 lg:h-40 "
+            >
               <Image
                 src="/profil-empty.jpg"
                 alt="Avatar"
@@ -66,7 +75,10 @@ export default function Portfolio(props: PortfolioProps) {
               />
             </div>
           ) : (
-            <div className="relative w-30 lg:w-40 h-30 lg:h-40 ">
+            <div
+              data-testid="portfolio-profil-pict"
+              className="relative w-30 lg:w-40 h-30 lg:h-40 "
+            >
               <Image
                 src={imageSrc.profileImage}
                 alt="Avatar"
@@ -81,13 +93,22 @@ export default function Portfolio(props: PortfolioProps) {
 
       {/* Info Profil */}
       <div className="pt-15 pb-5 text-center px-4 md:px-6 xl:px-12">
-        <h1 className="text-2xl 3xl:text-5xl font-bold">
+        <h1
+          data-testid="portfolio-name"
+          className="text-2xl 3xl:text-5xl font-bold"
+        >
           {props.profile?.name || "Nama"}
         </h1>
-        <p className="text-base 3xl:text-2xl text-gray-500 font-bold">
+        <p
+          data-testid="portfolio-title"
+          className="text-base 3xl:text-2xl text-gray-500 font-bold"
+        >
           {props.profile?.title || "Title / Posisi"}
         </p>
-        <p className="text-xs 3xl:text-lg mt-2 text-gray-600">
+        <p
+          data-testid="portfolio-description"
+          className="text-xs 3xl:text-lg mt-2 text-gray-600"
+        >
           {props.profile?.description || "Deskripsi"}
         </p>
       </div>
@@ -98,6 +119,7 @@ export default function Portfolio(props: PortfolioProps) {
           props.portfolios?.map((item, index) => {
             return (
               <PortfolioCard
+                id={`${index}`}
                 key={index}
                 title={item.position}
                 company={item.company}
@@ -108,7 +130,7 @@ export default function Portfolio(props: PortfolioProps) {
             );
           })
         ) : (
-          <PortfolioCard />
+          <PortfolioCard id={"1"} />
         )}
       </div>
     </div>
