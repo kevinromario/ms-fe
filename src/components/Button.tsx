@@ -20,6 +20,7 @@ export default function Button(props: ButtonProps) {
   return (
     <button
       id={props.id}
+      data-testid={props.id}
       className={`px-4 py-2 rounded ${
         props.disabled ? disabledCss : primaryCss
       }`}
