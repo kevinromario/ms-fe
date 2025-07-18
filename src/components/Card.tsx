@@ -48,25 +48,45 @@ export default function Card(props: CardProps) {
   return (
     <div
       id={props.id}
+      data-testid={props.id}
       className="bg-white p-6 drop-shadow-md rounded-xl flex flex-col gap-4"
     >
       <div className="flex justify-between items-center">
-        <span className={textUnderlineBase}>{props.title}</span>
+        <span
+          data-testid={`card-title-${props.id}`}
+          className={textUnderlineBase}
+        >
+          {props.title}
+        </span>
         <div className="flex gap-2 ">
-          <div
-            className="cursor-pointer"
-            onClick={() => setIsOpen((prev) => !prev)}
-          >
-            {isOpen ? <MdCloseFullscreen /> : <MdOpenInFull />}
+          <div className="cursor-pointer">
+            {isOpen ? (
+              <MdCloseFullscreen
+                data-testid={`card-toggle-close-${props.id}`}
+                onClick={() => setIsOpen(false)}
+              />
+            ) : (
+              <MdOpenInFull
+                data-testid={`card-toggle-open-${props.id}`}
+                onClick={() => setIsOpen(true)}
+              />
+            )}
           </div>
           {props.deletable && (
-            <SlClose className="cursor-pointer" onClick={props.handleDelete} />
+            <SlClose
+              data-testid={`card-delete-${props.id}`}
+              className="cursor-pointer"
+              onClick={props.handleDelete}
+            />
           )}
         </div>
       </div>
       <div
+        data-testid={`card-content-${props.id}`}
         ref={contentRef}
-        className="overflow-hidden transition-all duration-200 ease-in-out"
+        className={`overflow-hidden transition-all duration-200 ease-in-out ${
+          isOpen ? "expanded" : "collapsed"
+        }`}
         style={{ maxHeight }}
       >
         {props.children}
