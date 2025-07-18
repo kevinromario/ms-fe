@@ -10,6 +10,7 @@ import { MdOutlineAttachment } from "react-icons/md";
 import { subText, textBase, textBaseMedium } from "src/styles/typography";
 
 type UploadBoxProps<T extends FieldValues, K extends FieldPath<T>> = {
+  id: string;
   name: K;
   register: UseFormRegisterReturn;
   setValue: UseFormSetValue<T>;
@@ -19,7 +20,7 @@ type UploadBoxProps<T extends FieldValues, K extends FieldPath<T>> = {
 export default function UploadBox<
   T extends FieldValues,
   K extends FieldPath<T>
->({ name, register, setValue, watch }: UploadBoxProps<T, K>) {
+>({ id, name, register, setValue, watch }: UploadBoxProps<T, K>) {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const files = watch(name) as FileList | undefined;
   const fileName = files?.[0]?.name;
@@ -42,24 +43,34 @@ export default function UploadBox<
 
   return (
     <div
+      data-testid={`upload-container-${id}`}
       onDrop={handleDrop}
       onDragOver={handleDragOver}
       onClick={handleClick}
       className="w-full mx-auto p-8 rounded-lg bg-gray-100 flex flex-col items-center justify-center text-center cursor-pointer"
     >
-      <div className="text-2xl mb-2">
+      <div className="text-2xl mb-2" data-testid={`upload-icon-${id}`}>
         <MdOutlineAttachment />
       </div>
-      <p className={textBaseMedium}>
+      <p className={textBaseMedium} data-testid={`upload-label-${id}`}>
         Drag and drop files, or{" "}
         <span className="text-blue-600 underline">Browse</span>
       </p>
-      <p className={`${subText} text-gray-500 mt-2`}>
+      <p
+        className={`${subText} text-gray-500 mt-2`}
+        data-testid={`upload-format-${id}`}
+      >
         Support formats : png, jpg, jpeg.
       </p>
-      <p className={`${subText} text-gray-400 mt-1`}>Max size : 5Mb</p>
+      <p
+        className={`${subText} text-gray-400 mt-1`}
+        data-testid={`upload-size-${id}`}
+      >
+        Max size : 5Mb
+      </p>
 
       <input
+        data-testid={`upload-input-${id}`}
         type="file"
         accept="image/*"
         {...register}
@@ -69,7 +80,12 @@ export default function UploadBox<
         }}
         className="hidden"
       />
-      <p className={`${textBase} text-sm text-gray-600`}>{fileName}</p>
+      <p
+        className={`${textBase} text-sm text-gray-600`}
+        data-testid={`file-name-${id}`}
+      >
+        {fileName}
+      </p>
     </div>
   );
 }

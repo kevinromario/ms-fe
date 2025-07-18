@@ -178,6 +178,7 @@ export default function Editor() {
           <Card title="Background Image">
             <div className="flex flex-col gap-4">
               <UploadBox
+                id="background-image"
                 name="backgroundImage"
                 register={register("backgroundImage")}
                 setValue={setValue}
@@ -191,6 +192,7 @@ export default function Editor() {
           <Card title="Profile Image">
             <div className="flex flex-col gap-4">
               <UploadBox
+                id="profile-image"
                 name="profileImage"
                 register={register("profileImage")}
                 setValue={setValue}
