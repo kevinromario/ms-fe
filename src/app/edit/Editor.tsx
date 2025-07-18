@@ -1,5 +1,4 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { Resolver, useFieldArray, useForm } from "react-hook-form";
 import Button from "src/components/Button";
@@ -7,14 +6,15 @@ import Card from "src/components/Card";
 import Section from "src/components/Section";
 import Toast from "src/components/Toast";
 import UploadBox from "src/components/UploadBox";
-import VStack from "src/components/VStack";
 import { usePortfolioContext } from "src/contexts/PortfolioContext";
 import { portfolioSchema } from "src/schemas/portfolioSchema";
-import { inputBase, textareaBase } from "src/styles/inputStyles";
-import { subTextError, textBase } from "src/styles/typography";
+import { subTextError } from "src/styles/typography";
 import { PortfolioType } from "src/types/portfolioType";
 import { getDbData, saveFormData } from "src/utils/dbUtils";
 import { compressImage } from "src/utils/imageUtils";
+import PortfolioItemForm from "./components/PortfolioItemForm";
+import InputField from "src/components/InputField";
+import TextareaField from "src/components/TextareaField";
 
 const defaultEmpty: PortfolioType = {
   backgroundImage: undefined,
@@ -205,126 +205,42 @@ export default function Editor() {
           </Card>
           <Card title="Profile">
             <div className="flex flex-col gap-4">
-              <VStack>
-                <span className={textBase}>Nama:</span>
-                <input
-                  placeholder="Name"
-                  {...register("profile.name")}
-                  className={inputBase}
-                />
-                {errors.profile?.name && (
-                  <p className={subTextError}>{errors.profile.name.message}</p>
-                )}
-              </VStack>
-              <VStack>
-                <span className={textBase}>Title / Posisi:</span>
-                <input
-                  placeholder="Title / Posisi"
-                  {...register("profile.title")}
-                  className={inputBase}
-                />
-                {errors.profile?.title && (
-                  <p className={subTextError}>{errors.profile.title.message}</p>
-                )}
-              </VStack>
-              <VStack>
-                <span className={textBase}>Deskripsi:</span>
-                <textarea
-                  rows={4}
-                  className={textareaBase}
-                  placeholder="Description"
-                  {...register("profile.description")}
-                />
-                {errors.profile?.description && (
-                  <p className={subTextError}>
-                    {errors.profile.description.message}
-                  </p>
-                )}
-              </VStack>
+              <InputField
+                label="Nama:"
+                placeholder="Name"
+                {...register("profile.name")}
+                error={errors.profile?.name}
+              />
+              <InputField
+                label="Title / Posisi:"
+                placeholder="Title / Posisi"
+                {...register("profile.title")}
+                error={errors.profile?.title}
+              />
+              <TextareaField
+                label="Deskripsi:"
+                placeholder="Description"
+                rows={4}
+                {...register("profile.description")}
+                error={errors.profile?.description}
+              />
             </div>
           </Card>
           {/* Portfolio List */}
           {fields.map((field, index) => (
-            <Card
+            <PortfolioItemForm
               key={field.id}
-              id={`portofolio-${index}`}
-              title={`Portofolio ${index + 1}`}
+              index={index}
+              fieldId={field.id}
+              errors={errors}
+              register={register}
               deletable={fields.length > 1}
               handleDelete={() => handleDeletePortfolio(index)}
-            >
-              <div className="flex flex-col gap-4">
-                <VStack>
-                  <span className={textBase}>Posisi:</span>
-                  <input
-                    className={inputBase}
-                    placeholder="Position"
-                    {...register(`portfolios.${index}.position`)}
-                  />
-                  {errors.portfolios?.[index]?.position && (
-                    <p className={subTextError}>
-                      {errors.portfolios?.[index]?.position.message}
-                    </p>
-                  )}
-                </VStack>
-                <VStack>
-                  <span className={textBase}>Perusahaan:</span>
-                  <input
-                    className={inputBase}
-                    placeholder="Company"
-                    {...register(`portfolios.${index}.company`)}
-                  />
-                  {errors.portfolios?.[index]?.company && (
-                    <p className={subTextError}>
-                      {errors.portfolios?.[index]?.company.message}
-                    </p>
-                  )}
-                </VStack>
-                <VStack>
-                  <span className={textBase}>Tanggal Mulai:</span>
-                  <input
-                    className={inputBase}
-                    placeholder="Tanggal Mulai"
-                    type="date"
-                    {...register(`portfolios.${index}.startDate`)}
-                  />
-                  {errors.portfolios?.[index]?.startDate && (
-                    <p className={subTextError}>
-                      {errors.portfolios?.[index]?.startDate.message}
-                    </p>
-                  )}
-                </VStack>
-                <VStack>
-                  <span className={textBase}>Tanggal Selesai:</span>
-                  <input
-                    className={inputBase}
-                    placeholder="Tanggal Selesai"
-                    type="date"
-                    {...register(`portfolios.${index}.endDate`)}
-                  />
-                  {errors.portfolios?.[index]?.endDate && (
-                    <p className={subTextError}>
-                      {errors.portfolios?.[index]?.endDate.message}
-                    </p>
-                  )}
-                  <span className={textBase}>Deskripsi:</span>
-                  <textarea
-                    rows={4}
-                    className={textareaBase}
-                    placeholder="Description"
-                    {...register(`portfolios.${index}.description`)}
-                  />
-                  {errors.portfolios?.[index]?.description && (
-                    <p className={subTextError}>
-                      {errors.portfolios?.[index]?.description.message}
-                    </p>
-                  )}
-                </VStack>
-              </div>
-            </Card>
+            />
           ))}
-          {/* Button Add Portfolio */}
         </div>
       </form>
+      {/* Button Add Portfolio */}
       <div className="flex flex-col items-center mt-5">
         <Button
           id="add-portfolio"
